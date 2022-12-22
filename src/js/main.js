@@ -1,6 +1,8 @@
 import {loadScript} from './load.js';
 import { diffToHtml, diffDates} from './difDate.js';
 import MyTimer from './timer.js';
+import "../css/main.css";
+import './00171.mp3';
 
 const timer = document.querySelector('.timer');
 const dateCalc = document.querySelector('.dateCalc');
@@ -13,14 +15,13 @@ const second_time = document.querySelector('#second_time');
 const toggle = document.querySelector('#toggleBtn');
 const pause = document.querySelector('#pause');
 
-
 let state = [true];
-let sound = new Howl({
-    src: ['js/00171.mp3'],
-    volume: 0.5
-});
 toggle.addEventListener('click', ()=>{
-    sound.play();
+    toggle.innerHTML = `
+        <audio autoplay>
+        <source src="./00171.mp3" type="audio/mpeg">
+      </audio>
+    `;
     if (state[0]) {
         timer.style.display = 'none';
         dateCalc.style.display = 'block';
