@@ -4,14 +4,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
-    entry: './src/js/main.js',
+    entry: './src/js/index.js',
     output: {
         path: resolve(__dirname,'build'),
         filename: 'main.[contenthash].js'
     },
     plugins:[
         new HtmlWebpackPlugin({template: resolve(__dirname,
-                './src/timer.html')}),
+                './src/index.html')}),
         new MiniCssExtractPlugin({
             filename:'[name].[contenthash].css'
         }),
@@ -20,10 +20,39 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(png|jpe?g|gif|mp3)$/i,
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                    'file-loader?name=[name].[ext]',
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            mozjpeg: {
+                                progressive: true,
+                            },
+                            // optipng.enabled: false will disable optipng
+                            optipng: {
+                                enabled: false,
+                            },
+                            pngquant: {
+                                quality: [0.65, 0.90],
+                                speed: 4
+                            },
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                            // the webp option will enable WEBP
+                            webp: {
+                                quality: 75
+                            }
+                        }
+                    }
+                ],
+            },
+            {
+                test: /\.(mp3|mp4)$/i,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'file-loader?name=[name].[ext]',
                         options: {
                             name: '[name].[ext]'
                         }
